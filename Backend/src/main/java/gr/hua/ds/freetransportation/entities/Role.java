@@ -11,10 +11,10 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(length = 40, nullable = false, unique = true)
-    private String role;
+    @Column(length = 25, nullable = false, unique = true)
+    private String name;
 
-    @Column(length = 150, nullable = false)
+    @Column(length = 200, nullable = false)
     private String description;
 
     public Role() {
@@ -24,8 +24,8 @@ public class Role {
         this.id = id;
     }
 
-    public Role(String role, String description) {
-        this.role = role;
+    public Role(String name, String description) {
+        this.name = name;
         this.description = description;
     }
 
@@ -33,12 +33,12 @@ public class Role {
         return id;
     }
 
-    public String getRole() {
-        return role;
+    public String getName() {
+        return name;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -53,7 +53,7 @@ public class Role {
     public String toString() {
         return "Role{" +
                 "id=" + id +
-                ", role='" + role + '\'' +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }

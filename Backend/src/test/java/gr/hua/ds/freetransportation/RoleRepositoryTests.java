@@ -23,16 +23,17 @@ public class RoleRepositoryTests {
 
     @Test
     public void testCreateFirstRole() {
-        Role role = new Role(RoleTypes.UNEMPLOYED.toString(), "");
+        Role role = new Role(RoleTypes.DEFAULT_USER.toString(), "");
         Role r = repo.save(role);
         assertThat(r.getId()).isGreaterThan(0);
     }
 
     @Test
     public void testCreateRestRoles() {
-        Role role1 = new Role(RoleTypes.OAED_EMPLOYEE.toString(), "");
-        Role role2 = new Role(RoleTypes.TRANSPORTATION_EMPLOYEE.toString(), "");
-        Role role3 = new Role(RoleTypes.ADMIN.toString(), "");
-        repo.saveAll(List.of(role1, role2, role3));
+        Role role1 = new Role(RoleTypes.UNEMPLOYED.toString(), "");
+        Role role2 = new Role(RoleTypes.OAED_EMPLOYEE.toString(), "");
+        Role role3 = new Role(RoleTypes.TRANSPORTATION_EMPLOYEE.toString(), "");
+        Role role4 = new Role(RoleTypes.ADMIN.toString(), "");
+        repo.saveAll(List.of(role1, role2, role3, role4));
     }
 }

@@ -1,10 +1,11 @@
 package gr.hua.ds.freetransportation.entities;
 
 public enum RoleTypes {
-    UNEMPLOYED(1),
-    OAED_EMPLOYEE(2),
-    TRANSPORTATION_EMPLOYEE(3),
-    ADMIN(4);
+    DEFAULT_USER(1),
+    UNEMPLOYED(2),
+    OAED_EMPLOYEE(3),
+    TRANSPORTATION_EMPLOYEE(4),
+    ADMIN(5);
 
     private final int text;
 

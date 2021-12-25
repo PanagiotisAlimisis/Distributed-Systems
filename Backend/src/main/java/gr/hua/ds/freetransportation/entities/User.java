@@ -10,7 +10,7 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(name = "FIRST_NAME", length = 46, nullable = false)
     private String firstName;
@@ -24,27 +24,35 @@ public class User {
     @Column(length = 64, nullable = false)
     private String password;
 
-    @Column(name = "UNEMPLOYMENT_START_DATE")
-    private Date unemploymentStartDate;
+    @Column(name = "ENABLED", nullable = false)
+    private boolean enabled;
 
     @ManyToOne
-//    @JoinTable(name = "USERS_ROLES", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
     private Role role = new Role();
 
+    @OneToMany
+    @JoinTable(name = "USERS_FREE_TRANSPORTATION_APPLICATIONS", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "APPLICATION_ID"))
+    private Set<FreeTransportationApplication> freeTransportationApplications = new HashSet<>();
 
-    public User(String firstName, String lastName, String email, String password, Date unemploymentStartDate) {
+    @OneToMany
+    @JoinTable(name = "USERS_UNEMPLOYMENT_APPLICATIONS", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "APPLICATION_ID"))
+    private Set<UnemploymentApplication> unemploymentApplications = new HashSet<>();
+
+
+    public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.unemploymentStartDate = unemploymentStartDate;
+        this.enabled = true;
+        this.role = new Role(RoleTypes.DEFAULT_USER.toInt());
     }
 
     public User() {
 
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
@@ -80,37 +88,46 @@ public class User {
         this.password = password;
     }
 
-    public Date getUnemploymentStartDate() {
-        return unemploymentStartDate;
+    public Role getRole() {
+        return role;
     }
 
-    public void setUnemploymentStartDate(Date unemploymentStartDate) {
-        this.unemploymentStartDate = unemploymentStartDate;
-    }
-
-//    public Set<Role> getRoles() {
-//        return roles;
-//    }
-//
-//    public void setRoles(Set<Role> roles) {
-//        this.roles = roles;
-//    }
-//
-//    public void addRole(Role role) {
-//        this.roles.add(role);
-//    }
-
-//    public Role getRole() {
-//        return role;
-//    }
-//
     public void setRole(Role role) {
         this.role = role;
     }
 
-//    public void setApplications(Set<Application> applications) {
-//        this.applications = applications;
-//    }
+
+    public Set<FreeTransportationApplication> getFreeTransportationApplications() {
+        return freeTransportationApplications;
+    }
+
+    public void setFreeTransportationApplications(Set<FreeTransportationApplication> freeTransportationApplications) {
+        this.freeTransportationApplications = freeTransportationApplications;
+    }
+
+    public void addFreeTransportationApplication(FreeTransportationApplication application) {
+        this.freeTransportationApplications.add(application);
+    }
+
+    public Set<UnemploymentApplication> getUnemploymentApplications() {
+        return unemploymentApplications;
+    }
+
+    public void setUnemploymentApplications(Set<UnemploymentApplication> unemploymentApplications) {
+        this.unemploymentApplications = unemploymentApplications;
+    }
+
+    public void addUnemploymentApplication(UnemploymentApplication application) {
+        this.unemploymentApplications.add(application);
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     @Override
     public String toString() {
@@ -120,9 +137,9 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", unemploymentStartDate=" + unemploymentStartDate +
                 '}';
     }
+
 }
 
 
