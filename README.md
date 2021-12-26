@@ -9,7 +9,7 @@
 
 ### Class Diagram
 
-![Class Diagram](Analysis/'Class Diagram.jpg')
+![Class Diagram](Analysis/Class\ Diagram.jpg)
 
 ### ER Diagram
 
