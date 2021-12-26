@@ -9,19 +9,19 @@
 
 ### Class Diagram
 
-![Class Diagram](Analysis/Class\ Diagram.jpg)
+![Class Diagram](Analysis/Class_Diagram.jpg)
 
 ### ER Diagram
 
-![Entity Relationship Diagram](Analysis/"Entity Relationship Diagram.jpg")
+![Entity Relationship Diagram](Analysis/Entity_Relationship_Diagram.jpg)
 
 ### Use Case Diagram
 
-![Use Case Diagram](Analysis/"Use Case Diagram.jpg")
+![Use Case Diagram](Analysis/Use_Case_Diagram.jpg)
 
 ### Activity Diagram
 
-![Activity Diagram](Analysis/"Activity Diagram.jpg")
+![Activity Diagram](Analysis/Activity_Diagram.jpg)
 
 
 ## Database setup
