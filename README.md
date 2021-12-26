@@ -5,7 +5,7 @@
 
 ### System Architecture
 
-![System Architecture](Analysis/System_architecture.drawio.png)
+![System Architecture](Analysis/System_architecture.jpg)
 
 ### Class Diagram
 
