@@ -8,11 +8,11 @@ import java.util.Date;
 public class FreeTransportationApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     @Column(name = "DATE_SUBMITTED", nullable = false)
-    private Date dateSubmitted;
+    private Date dateSubmitted = new Date();
     @Column(length = 15, nullable = false)
-    private String status;
+    private String status = "PENDING";
     @Column(nullable = false)
     private boolean validated = false;
     @Column(nullable = false)
@@ -20,17 +20,27 @@ public class FreeTransportationApplication {
     @Column(length = 255, nullable = false)
     private String photo;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User user = new User();
+
     public FreeTransportationApplication(String photo) {
+        this.dateSubmitted = new Date();
+        this.status = "PENDING";
+        this.photo = photo;
+    }
+
+    public FreeTransportationApplication(String photo, User user) {
         this.dateSubmitted = new Date();
         this.status = "pending";
         this.photo = photo;
+        this.user = user;
     }
 
     public FreeTransportationApplication() {
 
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -72,6 +82,14 @@ public class FreeTransportationApplication {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

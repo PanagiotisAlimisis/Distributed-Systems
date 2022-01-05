@@ -1,5 +1,9 @@
 package gr.hua.ds.freetransportation.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import gr.hua.ds.freetransportation.dao.RoleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -10,7 +14,7 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "FIRST_NAME", length = 46, nullable = false)
     private String firstName;
@@ -21,38 +25,43 @@ public class User {
     @Column(length = 64, nullable = false, unique = true)
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(length = 64, nullable = false)
     private String password;
 
     @Column(name = "ENABLED", nullable = false)
-    private boolean enabled;
+    private boolean enabled = true;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Role role = new Role();
-
-    @OneToMany
-    @JoinTable(name = "USERS_FREE_TRANSPORTATION_APPLICATIONS", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "APPLICATION_ID"))
-    private Set<FreeTransportationApplication> freeTransportationApplications = new HashSet<>();
-
-    @OneToMany
-    @JoinTable(name = "USERS_UNEMPLOYMENT_APPLICATIONS", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "APPLICATION_ID"))
-    private Set<UnemploymentApplication> unemploymentApplications = new HashSet<>();
-
 
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.enabled = true;
-        this.role = new Role(RoleTypes.DEFAULT_USER.toInt());
+    }
+
+    public User(String firstName, String lastName, String email, String password, Role role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
     public User() {
-
     }
 
-    public int getId() {
+    public User(Integer id) {
+        this.id = id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
         return id;
     }
 
@@ -92,33 +101,13 @@ public class User {
         return role;
     }
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    public String getRoleName() {
+        return role.getName();
+    }
+
     public void setRole(Role role) {
         this.role = role;
-    }
-
-
-    public Set<FreeTransportationApplication> getFreeTransportationApplications() {
-        return freeTransportationApplications;
-    }
-
-    public void setFreeTransportationApplications(Set<FreeTransportationApplication> freeTransportationApplications) {
-        this.freeTransportationApplications = freeTransportationApplications;
-    }
-
-    public void addFreeTransportationApplication(FreeTransportationApplication application) {
-        this.freeTransportationApplications.add(application);
-    }
-
-    public Set<UnemploymentApplication> getUnemploymentApplications() {
-        return unemploymentApplications;
-    }
-
-    public void setUnemploymentApplications(Set<UnemploymentApplication> unemploymentApplications) {
-        this.unemploymentApplications = unemploymentApplications;
-    }
-
-    public void addUnemploymentApplication(UnemploymentApplication application) {
-        this.unemploymentApplications.add(application);
     }
 
     public boolean isEnabled() {

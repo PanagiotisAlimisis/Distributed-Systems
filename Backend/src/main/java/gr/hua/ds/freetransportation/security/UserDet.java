@@ -8,14 +8,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 public class UserDet implements UserDetails {
-
     private User user;
 
     public UserDet(User user) {
-        super();
         this.user = user;
     }
 
@@ -23,7 +20,7 @@ public class UserDet implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Role role = user.getRole();
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
-        return Collections.singletonList(authority);
+        return Collections.singleton(authority);
     }
 
     @Override
@@ -31,6 +28,10 @@ public class UserDet implements UserDetails {
         return user.getPassword();
     }
 
+    /**
+     *
+     * @return Email of the user.
+     */
     @Override
     public String getUsername() {
         return user.getEmail();
@@ -55,4 +56,17 @@ public class UserDet implements UserDetails {
     public boolean isEnabled() {
         return user.isEnabled();
     }
+
+    public String getFirstName() {
+        return user.getFirstName();
+    }
+
+    public String getLastName() {
+        return user.getLastName();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
 }

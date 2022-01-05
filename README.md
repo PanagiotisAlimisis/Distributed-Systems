@@ -23,6 +23,10 @@
 
 ![Activity Diagram](Analysis/Activity_Diagram.jpg)
 
+### Component Diagram
+
+![Component Diagram](Analysis/Component_Diagram.jpg)
+
 
 ## Database setup
 

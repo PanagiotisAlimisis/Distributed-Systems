@@ -7,6 +7,7 @@ create table free_transportation_system.free_transportation_applications (
     photo varchar(255) not null,
     status varchar(15) not null,
     validated bit not null,
+    user_id integer,
     primary key (id)
 ) engine=InnoDB;
 
@@ -23,6 +24,7 @@ create table free_transportation_system.unemployment_applications (
     photo varchar(255),
     reason varchar(500),
     status varchar(15) not null,
+    user_id integer,
     primary key (id)
 ) engine=InnoDB;
 
@@ -38,21 +40,11 @@ create table free_transportation_system.users (
     constraint FK_user_role foreign key (role_id) references free_transportation_system.roles (id)
 ) engine=InnoDB;
 
-create table free_transportation_system.users_free_transportation_applications (
-    user_id integer not null,
-    application_id bigint not null,
-    primary key (user_id, application_id),
-    constraint FK_app_id foreign key (application_id) references free_transportation_system.free_transportation_applications (id),
-    constraint FK_user_id foreign key (user_id) references free_transportation_system.users (id)
-) engine=InnoDB;
+alter table free_transportation_system.free_transportation_applications
+add constraint fk_usr_id foreign key (user_id) references users(id);
 
-create table free_transportation_system.users_unemployment_applications (
-    user_id integer not null,
-    application_id bigint not null,
-    primary key (user_id, application_id),
-    constraint FK_appl_id foreign key (application_id) references free_transportation_system.unemployment_applications (id),
-    constraint FK_usr_id foreign key (user_id) references free_transportation_system.users (id)
-) engine=InnoDB;
+alter table free_transportation_system.unemployment_applications
+add constraint fk_user_id foreign key (user_id) references users(id);
 
 insert into free_transportation_system.roles(name, description) values("DEFAULT_USER", "CAN ONLY APPLY FOR UNEMPLOYMENT");
 insert into free_transportation_system.roles(name, description) values("UNEMPLOYED", "CAN APPLY FOR FREE TRANSPORTATION");
@@ -60,4 +52,4 @@ insert into free_transportation_system.roles(name, description) values("OAED_EMP
 insert into free_transportation_system.roles(name, description) values("TRANSPORTATION_EMPLOYEE", "APPROVES / REJECTS APPLICATIONS FOR FREE TRANSPORTATION");
 insert into free_transportation_system.roles(name, description) values("ADMIN", "CREATES, EDITS 'OAED_EMPLOYEE' AND 'TRANSPORTATION_EMPLOYEE', DELETES ALL USERS");
 
-insert into free_transportation_system.users(email, enabled, first_name, last_name, password, role_id) values("it21902@hua.gr", true, "Panagiotis", "Alimisis", "123", 5);
+insert into free_transportation_system.users(email, enabled, first_name, last_name, password, role_id) values("it21902@hua.gr", true, "Panagiotis", "Alimisis", "$2a$12$.t6.bnmvqMqP7qPR8bnoyOG6itxF4Iog9p/LJlffXL6w.ZzXiBMnS", 5);

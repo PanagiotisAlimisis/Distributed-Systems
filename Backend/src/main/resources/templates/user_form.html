@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create new user</title>
+</head>
+<body>
+<form id="form" th:action="@{/admin/users}" method="post" th:object="${user}" >
+    <div class="container">
+        <h1>New User Form</h1>
+        <p>Please fill in this form to create a new user.</p>
+        <hr>
+
+        <br/>
+
+        <input id="id" type="hidden" th:field="*{id}" />
+
+        <label for="firstName"><b>First name</b></label>
+        <input type="text" placeholder="Enter First name" name="firstName" th:field="*{firstName}" required />
+
+        <br/>
+
+        <label for="lastName"><b>Last name</b></label>
+        <input type="text" placeholder="Enter Last name" name="lastName" th:field="*{lastName}" required>
+
+        <br/>
+
+        <div>
+            <label for="email"><b>Email</b></label>
+            <input type="text" placeholder="Enter Email" name="email" th:field="*{email}" required>
+            <label th:if="${#fields.hasErrors('email')}" th:class="'error'" th:errors=*{email} class="col-lg-4 control-label" style="color:red;" ></label>
+            <br/>
+        </div>
+
+        <div th:if="${user.id == null}">
+            <label for="password"><b>Password</b></label>
+            <input type="password" class="form-control" th:field="*{password}" required  maxlength="20"/>
+            <br/>
+        </div>
+
+        <div th:if="${user.id != null}">
+            <label for="password"><b>Password</b></label>
+            <input type="hidden" class="form-control" th:field="*{password}" required  maxlength="20"/>
+            <br/>
+        </div>
+
+        <label for="role">Role</label>
+        <th:block th:each="role : ${roleList}">
+            <input name="role" type="radio" th:text="${role.name}" th:value="${role.id}" th:field="*{role}" required/>
+            -
+            <small>[[${role.description}]]</small>
+            <br/>
+        </th:block>
+        <br/>
+    </div>
+
+    <div>
+        <input type="submit" value="Save">
+    </div>
+</form>
+</body>
+</html>
