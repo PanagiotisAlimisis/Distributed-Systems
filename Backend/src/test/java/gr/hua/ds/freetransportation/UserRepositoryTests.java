@@ -1,9 +1,8 @@
 package gr.hua.ds.freetransportation;
 
 import gr.hua.ds.freetransportation.entities.Role;
-import gr.hua.ds.freetransportation.entities.RoleTypes;
 import gr.hua.ds.freetransportation.entities.User;
-import gr.hua.ds.freetransportation.admin.service.UserService;
+import gr.hua.ds.freetransportation.admin.service.AdminService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -19,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserRepositoryTests {
 
     @Autowired
-    UserService service;
+    AdminService service;
 
     @Autowired
     private TestEntityManager entityManager;
@@ -43,10 +42,10 @@ public class UserRepositoryTests {
 //        }
 //    }
 
-    @Test
-    public void testSaveUser() {
-        User user = new User("user1", "user1", "user1@mail.com", "123");
-        user.setRole(new Role(RoleTypes.OAED_EMPLOYEE.toInt()));
-        service.saveUser(user);
-    }
+//    @Test
+//    public void testSaveUser() {
+//        User user = new User("user1", "user1", "user1@mail.com", "123");
+//        user.setRole(new Role(RoleTypes.OAED_EMPLOYEE.toInt()));
+//        service.saveUser(user);
+//    }
 }

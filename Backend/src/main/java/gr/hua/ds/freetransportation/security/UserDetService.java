@@ -2,7 +2,7 @@ package gr.hua.ds.freetransportation.security;
 
 import gr.hua.ds.freetransportation.dao.UserRepository;
 import gr.hua.ds.freetransportation.entities.User;
-import gr.hua.ds.freetransportation.admin.service.UserService;
+import gr.hua.ds.freetransportation.admin.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +17,7 @@ public class UserDetService implements UserDetailsService {
     private UserRepository userRepo;
 
     @Autowired
-    private UserService service;
+    private AdminService service;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

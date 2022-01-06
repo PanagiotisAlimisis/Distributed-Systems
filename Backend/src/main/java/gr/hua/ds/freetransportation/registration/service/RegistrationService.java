@@ -1,7 +1,7 @@
 package gr.hua.ds.freetransportation.registration.service;
 
 import gr.hua.ds.freetransportation.entities.User;
-import gr.hua.ds.freetransportation.admin.service.UserService;
+import gr.hua.ds.freetransportation.admin.service.AdminService;
 import gr.hua.ds.freetransportation.registration.RegistrationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class RegistrationService {
 
     @Autowired
-    private UserService userService;
+    private AdminService userService;
 
     /**
      * @param request

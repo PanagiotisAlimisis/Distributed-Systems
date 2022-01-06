@@ -1,5 +1,7 @@
 package gr.hua.ds.freetransportation.entities;
 
+import gr.hua.ds.freetransportation.Status;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -12,7 +14,7 @@ public class FreeTransportationApplication {
     @Column(name = "DATE_SUBMITTED", nullable = false)
     private Date dateSubmitted = new Date();
     @Column(length = 15, nullable = false)
-    private String status = "PENDING";
+    private String status = Status.PENDING.toString();
     @Column(nullable = false)
     private boolean validated = false;
     @Column(nullable = false)
@@ -25,7 +27,7 @@ public class FreeTransportationApplication {
 
     public FreeTransportationApplication(String photo) {
         this.dateSubmitted = new Date();
-        this.status = "PENDING";
+        this.status = Status.PENDING.toString();
         this.photo = photo;
     }
 

@@ -4,7 +4,7 @@ import gr.hua.ds.freetransportation.entities.Role;
 import gr.hua.ds.freetransportation.entities.User;
 import gr.hua.ds.freetransportation.exceptions.UserNotFoundException;
 import gr.hua.ds.freetransportation.export.UserCsvExporter;
-import gr.hua.ds.freetransportation.admin.service.UserService;
+import gr.hua.ds.freetransportation.admin.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -25,7 +25,7 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    private UserService service;
+    private AdminService service;
 
     @GetMapping("/users")
     public String viewCreateNewUserPage(Model model) {
@@ -106,8 +106,8 @@ public class AdminController {
         Page<User> page = service.listByPage(pageNumber, sortField, sortDir, keyword);
         List<User> userList = page.getContent();
 
-        long startCount = (pageNumber - 1) * UserService.USERS_PER_PAGE + 1;
-        long endCount = startCount + UserService.USERS_PER_PAGE - 1;
+        long startCount = (pageNumber - 1) * AdminService.USERS_PER_PAGE + 1;
+        long endCount = startCount + AdminService.USERS_PER_PAGE - 1;
         if (endCount > page.getTotalElements()) {
             endCount = page.getTotalElements();
         }

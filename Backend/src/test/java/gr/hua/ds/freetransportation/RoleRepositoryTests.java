@@ -2,7 +2,6 @@ package gr.hua.ds.freetransportation;
 
 import gr.hua.ds.freetransportation.dao.RoleRepository;
 import gr.hua.ds.freetransportation.entities.Role;
-import gr.hua.ds.freetransportation.entities.RoleTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

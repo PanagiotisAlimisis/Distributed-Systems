@@ -3,7 +3,7 @@ package gr.hua.ds.freetransportation.admin.service;
 import gr.hua.ds.freetransportation.dao.RoleRepository;
 import gr.hua.ds.freetransportation.dao.UserRepository;
 import gr.hua.ds.freetransportation.entities.Role;
-import gr.hua.ds.freetransportation.entities.RoleTypes;
+import gr.hua.ds.freetransportation.RoleTypes;
 import gr.hua.ds.freetransportation.entities.User;
 import gr.hua.ds.freetransportation.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class UserService {
+public class AdminService {
     public static final int USERS_PER_PAGE = 10;
 
     @Autowired
@@ -46,7 +46,8 @@ public class UserService {
             encodePassword(user);
         }
         if (user.getRole().getId() == null) {
-            Role role = roleRepository.findById(RoleTypes.DEFAULT_USER.toInt()).get();
+
+            Role role = roleRepository.findByRoleName(RoleTypes.DEFAULT_USER.toString());
             user.setRole(role);
         }
         return userRepository.save(user);

@@ -1,5 +1,6 @@
 package gr.hua.ds.freetransportation.security.config;
 
+import gr.hua.ds.freetransportation.RoleTypes;
 import gr.hua.ds.freetransportation.security.UserDetService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,11 +51,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers("/admin/**").hasAnyAuthority("ADMIN")
-            .antMatchers("/api/unemployment_application/**").hasAnyAuthority("DEFAULT_USER")
-            .antMatchers("/api/oaed_employee/**").hasAnyAuthority("OAED_EMPLOYEE")
-            .antMatchers("/api/unemployed/**").hasAnyAuthority("UNEMPLOYED")
-            .antMatchers("/api/transportation_employee/**").hasAnyAuthority("TRANSPORTATION_EMPLOYEE")
+            .antMatchers("/admin/**").hasAnyAuthority(RoleTypes.ADMIN.toString())
+            .antMatchers("/api/unemployment_application/**").hasAnyAuthority(RoleTypes.DEFAULT_USER.toString())
+            .antMatchers("/api/oaed_employee/**").hasAnyAuthority(RoleTypes.OAED_EMPLOYEE.toString())
+            .antMatchers("/api/unemployed/**").hasAnyAuthority(RoleTypes.UNEMPLOYED.toString())
+            .antMatchers("/api/transportation_employee/**").hasAnyAuthority(RoleTypes.TRANSPORTATION_EMPLOYEE.toString())
             .antMatchers("/api/register/**").permitAll()
             .antMatchers("/api/login/**").permitAll()
             .anyRequest().authenticated()

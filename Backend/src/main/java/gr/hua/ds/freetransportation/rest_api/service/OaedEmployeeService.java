@@ -1,20 +1,28 @@
 package gr.hua.ds.freetransportation.rest_api.service;
 
+import gr.hua.ds.freetransportation.RoleTypes;
+import gr.hua.ds.freetransportation.Status;
 import gr.hua.ds.freetransportation.dao.FreeTransportationApplicationRepository;
 import gr.hua.ds.freetransportation.dao.RoleRepository;
 import gr.hua.ds.freetransportation.dao.UnemploymentApplicationRepository;
 import gr.hua.ds.freetransportation.dao.UserRepository;
 import gr.hua.ds.freetransportation.entities.*;
+import gr.hua.ds.freetransportation.rest_api.ApplicationsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class OaedEmployeeService {
+
+    public static final int APPLICATIONS_PER_PAGE = 10;
 
     @Autowired
     private UnemploymentApplicationRepository unemploymentApplicationRepository;
@@ -28,9 +36,15 @@ public class OaedEmployeeService {
     @Autowired
     private UserRepository userRepository;
 
-    public ResponseEntity<?> listUnemploymentApplications() {
-        List<UnemploymentApplication> unemploymentApplications = unemploymentApplicationRepository.findPendingApplications();
-        return ResponseEntity.ok(unemploymentApplications);
+    public ResponseEntity<?> listUnemploymentApplications(int pageNumber, String sortField, String sortDir) {
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+        Pageable pageable = PageRequest.of(pageNumber - 1, APPLICATIONS_PER_PAGE, sort);
+        ApplicationsResponse<UnemploymentApplication> response = new ApplicationsResponse<>();
+        Page<UnemploymentApplication> pendingApplications = unemploymentApplicationRepository.findPendingApplications(pageable);
+        response.setTotalPages(pendingApplications.getTotalPages());
+        response.setApplications(pendingApplications.getContent());
+        return ResponseEntity.ok(response);
     }
 
     public ResponseEntity<?> evaluateUnemploymentApplication(String id, String decision) {
@@ -42,7 +56,7 @@ public class OaedEmployeeService {
             return new ResponseEntity<>("First parameter should be a number.", HttpStatus.BAD_REQUEST);
         }
 
-        if (!decision.equals("ACCEPT") && !decision.equals("REJECT")) {
+        if (!decision.equals(Status.ACCEPT.toString()) && !decision.equals(Status.REJECT.toString())) {
             return new ResponseEntity<>("The decision should be either ACCEPT or REJECT", HttpStatus.BAD_REQUEST);
         }
 
@@ -54,7 +68,7 @@ public class OaedEmployeeService {
 
         application.get().setStatus(decision);
 
-        if (decision.equals("ACCEPT")) {
+        if (decision.equals(Status.ACCEPT.toString())) {
             updateUsersRole(application.get().getUser());
         }
 
@@ -62,9 +76,15 @@ public class OaedEmployeeService {
         return new ResponseEntity<>("Application's status has been updated.", HttpStatus.OK);
     }
 
-    public ResponseEntity<?> listFreeTransportationApplications() {
-        List<FreeTransportationApplication> applications = freeTransportationApplicationRepository.findUnansweredApplications();
-        return ResponseEntity.ok(applications);
+    public ResponseEntity<?> listFreeTransportationApplications(int pageNumber, String sortField, String sortDir) {
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+        Pageable pageable = PageRequest.of(pageNumber - 1, APPLICATIONS_PER_PAGE, sort);
+        ApplicationsResponse<FreeTransportationApplication> response = new ApplicationsResponse<>();
+        Page<FreeTransportationApplication> pendingApplications = freeTransportationApplicationRepository.findUnansweredApplications(pageable);
+        response.setTotalPages(pendingApplications.getTotalPages());
+        response.setApplications(pendingApplications.getContent());
+        return ResponseEntity.ok(response);
     }
 
     public ResponseEntity<?> evaluateFreeTransportationApplication(String id, String decision) {
@@ -76,7 +96,7 @@ public class OaedEmployeeService {
             return new ResponseEntity<>("First parameter should be a number.", HttpStatus.BAD_REQUEST);
         }
 
-        if (!decision.equals("ACCEPT") && !decision.equals("REJECT")) {
+        if (!decision.equals(Status.ACCEPT.toString()) && !decision.equals(Status.REJECT.toString())) {
             return new ResponseEntity<>("The decision should be either ACCEPT or REJECT", HttpStatus.BAD_REQUEST);
         }
 
@@ -86,11 +106,11 @@ public class OaedEmployeeService {
             return new ResponseEntity<>("Application not found.", HttpStatus.NOT_FOUND);
         }
 
-        if (decision.equals("ACCEPT")) {
+        if (decision.equals(Status.ACCEPT.toString())) {
             application.get().setValidated(true);
         } else {
             application.get().setValidated(false);
-            application.get().setStatus("REJECT");
+            application.get().setStatus(Status.REJECT.toString());
         }
 
         freeTransportationApplicationRepository.save(application.get());
@@ -98,7 +118,7 @@ public class OaedEmployeeService {
     }
 
     private void updateUsersRole(User user) {
-        Role role = roleRepository.findById(RoleTypes.UNEMPLOYED.toInt()).get();
+        Role role = roleRepository.findByRoleName(RoleTypes.UNEMPLOYED.toString());
         user.setRole(role);
         userRepository.save(user);
     }

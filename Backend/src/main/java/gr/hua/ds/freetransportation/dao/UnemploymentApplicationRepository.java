@@ -1,6 +1,8 @@
 package gr.hua.ds.freetransportation.dao;
 
 import gr.hua.ds.freetransportation.entities.UnemploymentApplication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,5 +17,6 @@ public interface UnemploymentApplicationRepository extends JpaRepository<Unemplo
     public int countPendingApplications(@Param("user_id") Integer userId);
 
     @Query("SELECT a FROM UnemploymentApplication a WHERE a.status = 'PENDING'")
-    public List<UnemploymentApplication> findPendingApplications();
+    public Page<UnemploymentApplication> findPendingApplications(Pageable pageable);
+
 }

@@ -1,5 +1,7 @@
 package gr.hua.ds.freetransportation.entities;
 
+import gr.hua.ds.freetransportation.Status;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -16,7 +18,7 @@ public class UnemploymentApplication {
     @Column(length = 255, nullable = true)
     private String photo;
     @Column(length = 15, nullable = false)
-    private String status = "PENDING";
+    private String status = Status.PENDING.toString();
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User user = new User();
@@ -28,7 +30,7 @@ public class UnemploymentApplication {
         this.dateSubmitted = new Date();
         this.reason = reason;
         this.photo = photo;
-        this.status = "PENDING";
+        this.status = Status.PENDING.toString();
         this.user = user;
     }
 
@@ -36,7 +38,7 @@ public class UnemploymentApplication {
         this.dateSubmitted = new Date();
         this.reason = reason;
         this.photo = photo;
-        this.status = "PENDING";
+        this.status = Status.PENDING.toString();
     }
 
     public Integer getId() {
