@@ -21,7 +21,6 @@ create table free_transportation_system.roles (
 create table free_transportation_system.unemployment_applications (
     id bigint not null auto_increment,
     date_submitted datetime not null,
-    photo varchar(255),
     reason varchar(500),
     status varchar(15) not null,
     user_id integer,
@@ -53,3 +52,9 @@ insert into free_transportation_system.roles(name, description) values("TRANSPOR
 insert into free_transportation_system.roles(name, description) values("ADMIN", "CREATES, EDITS 'OAED_EMPLOYEE' AND 'TRANSPORTATION_EMPLOYEE', DELETES ALL USERS");
 
 insert into free_transportation_system.users(email, enabled, first_name, last_name, password, role_id) values("it21902@hua.gr", true, "Panagiotis", "Alimisis", "$2a$12$.t6.bnmvqMqP7qPR8bnoyOG6itxF4Iog9p/LJlffXL6w.ZzXiBMnS", 5);
+insert into free_transportation_system.users(email, enabled, first_name, last_name, password, role_id) values("user1@mail.com", true, "user1", "user1", "$2a$12$.t6.bnmvqMqP7qPR8bnoyOG6itxF4Iog9p/LJlffXL6w.ZzXiBMnS", 1);
+insert into free_transportation_system.users(email, enabled, first_name, last_name, password, role_id) values("user2@mail.com", true, "user2", "user2", "$2a$12$.t6.bnmvqMqP7qPR8bnoyOG6itxF4Iog9p/LJlffXL6w.ZzXiBMnS", 2);
+insert into free_transportation_system.users(email, enabled, first_name, last_name, password, role_id) values("user3@mail.com", true, "user3", "user3", "$2a$12$.t6.bnmvqMqP7qPR8bnoyOG6itxF4Iog9p/LJlffXL6w.ZzXiBMnS", 3);
+insert into free_transportation_system.users(email, enabled, first_name, last_name, password, role_id) values("user4@mail.com", true, "user4", "user4", "$2a$12$.t6.bnmvqMqP7qPR8bnoyOG6itxF4Iog9p/LJlffXL6w.ZzXiBMnS", 4);
+
+insert into free_transportation_system.unemployment_applications(date_submitted, reason,  status, user_id) values("2022-01-01", "", "PENDING", 2);
