@@ -15,8 +15,6 @@ public class UnemploymentApplication {
     private Date dateSubmitted = new Date();
     @Column(length = 500, nullable = true)
     private String reason;
-    @Column(length = 255, nullable = true)
-    private String photo;
     @Column(length = 15, nullable = false)
     private String status = Status.PENDING.toString();
 
@@ -26,18 +24,16 @@ public class UnemploymentApplication {
     public UnemploymentApplication() {
     }
 
-    public UnemploymentApplication(String reason, String photo, User user) {
+    public UnemploymentApplication(String reason, User user) {
         this.dateSubmitted = new Date();
         this.reason = reason;
-        this.photo = photo;
         this.status = Status.PENDING.toString();
         this.user = user;
     }
 
-    public UnemploymentApplication(String reason, String photo) {
+    public UnemploymentApplication(String reason) {
         this.dateSubmitted = new Date();
         this.reason = reason;
-        this.photo = photo;
         this.status = Status.PENDING.toString();
     }
 
@@ -61,14 +57,6 @@ public class UnemploymentApplication {
         this.reason = reason;
     }
 
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -83,5 +71,16 @@ public class UnemploymentApplication {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "UnemploymentApplication{" +
+                "id=" + id +
+                ", dateSubmitted=" + dateSubmitted +
+                ", reason='" + reason + '\'' +
+                ", status='" + status + '\'' +
+                ", user=" + user.toString() +
+                '}';
     }
 }

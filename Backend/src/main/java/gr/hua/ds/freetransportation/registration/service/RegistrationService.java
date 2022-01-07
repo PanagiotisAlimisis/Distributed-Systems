@@ -23,12 +23,7 @@ public class RegistrationService {
         if ( (!requestIsOk(request)) || (!userService.isEmailUnique(null, request.getEmail())) ) {
             return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
         }
-
-        User user = new User(request.getFirstName(),
-                             request.getLastName(),
-                             request.getEmail(),
-                             request.getPassword());
-
+        User user = new User(request.getFirstName(), request.getLastName(),  request.getEmail(), request.getPassword());
         userService.saveUser(user);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }

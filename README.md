@@ -21,7 +21,7 @@
 
 ### Activity Diagram
 
-![Activity Diagram](Analysis/Activity_Diagram.jpg)
+![Activity Diagram](Analysis/Application_Activity_Diagram.jpg)
 
 ### Component Diagram
 

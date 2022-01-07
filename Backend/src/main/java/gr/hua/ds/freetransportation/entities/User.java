@@ -1,13 +1,8 @@
 package gr.hua.ds.freetransportation.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import gr.hua.ds.freetransportation.dao.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
@@ -126,9 +121,10 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", enabled=" + enabled +
+                ", role=" + role.toString() +
                 '}';
     }
-
 }
 
 

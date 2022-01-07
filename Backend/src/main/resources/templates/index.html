@@ -10,17 +10,19 @@
         <input type="submit" value="Logout"/>
     </form>
 
-    <a th:href="@{/admin/users/export/csv}" title="Export to CSV">Export to CSV</a>
+    <a th:href="@{/admin/users/export/csv}" title="Export to CSV">Export all users to CSV</a>
+    <a th:href="@{/admin/users/export/pdf}" title="Export to PDF">Export unemployed users to PDF</a>
+    <a th:href="@{/admin/users/export/excel}" title="Export to EXCEL">Export employers users to EXCEL</a>
     <a th:href="@{/admin/users}"><button>Create new user</button></a>
 
     <table>
         <tr>
             <th>Id</th>
-            <th> <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=' + 'firstName' + '&sortDir=' + ${sortDir == 'firstName' ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">First Name</a></th>
-            <th> <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=' + 'lastName' + '&sortDir=' + ${sortDir == 'lastName' ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Last Name</a></th>
-            <th> <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=' + 'email' + '&sortDir=' + ${sortDir == 'email' ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Email</a></th>
-            <th> <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=' + 'role' + '&sortDir=' + ${sortDir == 'role' ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Role</a></th>
-            <th> <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=' + 'enabled' + '&sortDir=' + ${sortDir == 'enabled' ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Enabled</a></th>
+            <th> <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=' + 'firstName' + '&sortDir=' + ${sortDir == 'firstName' ? sortDir : reverseSortDir}}">First Name</a></th>
+            <th> <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=' + 'lastName' + '&sortDir=' + ${sortDir == 'lastName' ? sortDir : reverseSortDir}}">Last Name</a></th>
+            <th> <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=' + 'email' + '&sortDir=' + ${sortDir == 'email' ? sortDir : reverseSortDir}}">Email</a></th>
+            <th> <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=' + 'role' + '&sortDir=' + ${sortDir == 'role' ? sortDir : reverseSortDir}}">Role</a></th>
+            <th> <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=' + 'enabled' + '&sortDir=' + ${sortDir == 'enabled' ? sortDir : reverseSortDir}}">Enabled</a></th>
 
         </tr>
         <tr th:each="user : ${userList}">
@@ -44,20 +46,16 @@
         <nav>
             <ul class="pagination justify-content-center flex-wrap">
                 <li th:if="${currentPage > 1}">
-                    <a th:href="@{'/admin/users/page/' + ${1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">First</a>
+                    <a th:href="@{'/admin/users/page/' + ${1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">First</a>
                 </li>
                 <li th:if="${currentPage > 1}">
-                    <a th:href="@{'/admin/users/page/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Previous</a>
-                </li>
-<!--                <li th:class="${currentPage != i} ? 'page-item': 'page-item active'"-->
-<!--                    th:each="i : ${#numbers.sequence(1, totalPages)}">-->
-<!--                    <a th:replace="fragments :: page_link(${i}, ${i})"></a>-->
-<!--                </li>-->
-                <li th:if="${currentPage != totalPages}">
-                    <a th:href="@{'/admin/users/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Next</a>
+                    <a th:href="@{'/admin/users/page/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
                 </li>
                 <li th:if="${currentPage != totalPages}">
-                    <a th:href="@{'/admin/users/page/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Last</a>
+                    <a th:href="@{'/admin/users/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+                </li>
+                <li th:if="${currentPage != totalPages}">
+                    <a th:href="@{'/admin/users/page/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
                 </li>
             </ul>
         </nav>

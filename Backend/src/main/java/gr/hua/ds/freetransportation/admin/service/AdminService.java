@@ -18,7 +18,7 @@ import java.util.*;
 
 @Service
 public class AdminService {
-    public static final int USERS_PER_PAGE = 10;
+    public static final int USERS_PER_PAGE = 3;
 
     @Autowired
     private UserRepository userRepository;
@@ -46,7 +46,6 @@ public class AdminService {
             encodePassword(user);
         }
         if (user.getRole().getId() == null) {
-
             Role role = roleRepository.findByRoleName(RoleTypes.DEFAULT_USER.toString());
             user.setRole(role);
         }
@@ -64,9 +63,7 @@ public class AdminService {
         }
         boolean isCreatingNew = (id == null);
         if (isCreatingNew) {
-            if (user != null) {
-                return false;
-            }
+            return false;
         } else {
             if (!user.getId().equals(id)) {
                 return false;
@@ -83,7 +80,7 @@ public class AdminService {
      */
     public User get(Integer id) throws UserNotFoundException {
         try {
-            return userRepository.findById(Math.toIntExact(id)).get();
+            return userRepository.findById(id).get();
         } catch (NoSuchElementException e) {
             throw new UserNotFoundException("Could not find any user with ID " + id);
         }
@@ -114,17 +111,22 @@ public class AdminService {
         return userRepository.getUserByEmail(email).getFirstName();
     }
 
-    public Page<User> listByPage(int pageNumber, String sortField, String sortDir, String keyword) {
+    public Page<User> listByPage(int pageNumber, String sortField, String sortDir) {
         Sort sort = Sort.by(sortField);
         sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
         Pageable pageable = PageRequest.of(pageNumber - 1, USERS_PER_PAGE, sort);
-        if (keyword != null) {
-            return userRepository.findAll(keyword, pageable);
-        }
         return userRepository.findAll(pageable);
     }
 
     private void encodePassword(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+    }
+
+    public List<User> listAllUnemployed() {
+        return userRepository.findAllUnemployed();
+    }
+
+    public List<User> listAllEmployed() {
+        return userRepository.findAllEmployed();
     }
 }

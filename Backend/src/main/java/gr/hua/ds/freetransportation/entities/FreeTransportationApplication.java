@@ -96,13 +96,14 @@ public class FreeTransportationApplication {
 
     @Override
     public String toString() {
-        return "Application{" +
+        return "FreeTransportationApplication{" +
                 "id=" + id +
                 ", dateSubmitted=" + dateSubmitted +
-                ", status=" + status +
+                ", status='" + status + '\'' +
                 ", validated=" + validated +
                 ", approved=" + approved +
                 ", photo='" + photo + '\'' +
+                ", user=" + user.toString() +
                 '}';
     }
 }

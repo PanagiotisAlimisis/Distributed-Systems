@@ -1,5 +1,6 @@
 package gr.hua.ds.freetransportation.rest_api.controller;
 
+import com.google.zxing.WriterException;
 import gr.hua.ds.freetransportation.rest_api.service.TransportationEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -22,7 +23,7 @@ public class TransportationEmployeeController {
     }
 
     @PutMapping("/evaluate_free_transportation_applications")
-    public ResponseEntity<?> evaluateFreeTransportationApplication(@RequestParam("application_id") String id, @RequestParam("decision") String decision) {
+    public ResponseEntity<?> evaluateFreeTransportationApplication(@RequestParam("application_id") String id, @RequestParam("decision") String decision) throws WriterException {
         return service.evaluateFreeTransportationApplication(id, decision);
     }
 

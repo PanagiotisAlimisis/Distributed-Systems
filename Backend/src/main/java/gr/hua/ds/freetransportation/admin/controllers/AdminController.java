@@ -3,7 +3,9 @@ package gr.hua.ds.freetransportation.admin.controllers;
 import gr.hua.ds.freetransportation.entities.Role;
 import gr.hua.ds.freetransportation.entities.User;
 import gr.hua.ds.freetransportation.exceptions.UserNotFoundException;
-import gr.hua.ds.freetransportation.export.UserCsvExporter;
+import gr.hua.ds.freetransportation.export.ExcelExporter;
+import gr.hua.ds.freetransportation.export.PdfExporter;
+import gr.hua.ds.freetransportation.export.CsvExporter;
 import gr.hua.ds.freetransportation.admin.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -76,7 +78,21 @@ public class AdminController {
     @GetMapping("/users/export/csv")
     public void exportToCSV(HttpServletResponse response) throws IOException {
         List<User> listUsers = service.listAll();
-        UserCsvExporter exporter = new UserCsvExporter();
+        CsvExporter exporter = new CsvExporter();
+        exporter.export(listUsers, response);
+    }
+
+    @GetMapping("/users/export/pdf")
+    public void exportToPDF(HttpServletResponse response) throws IOException {
+        List<User> listUsers = service.listAllUnemployed();
+        PdfExporter exporter = new PdfExporter();
+        exporter.export(listUsers, response);
+    }
+
+    @GetMapping("/users/export/excel")
+    public void exportToEXCEL(HttpServletResponse response) throws IOException {
+        List<User> listUsers = service.listAllEmployed();
+        ExcelExporter exporter = new ExcelExporter();
         exporter.export(listUsers, response);
     }
 
@@ -87,8 +103,7 @@ public class AdminController {
             model.addAttribute("msg", "Hi " + firstName
                     + ", you do not have permission to access this page!");
         } else {
-            model.addAttribute("msg",
-                    "You do not have permission to access this page!");
+            model.addAttribute("msg", "You do not have permission to access this page!");
         }
 
         return "forbidden";
@@ -96,14 +111,14 @@ public class AdminController {
 
     @GetMapping("/home")
     public String listFirstPage(Model model) {
-        return listByPage(1, model, "id", "asc", null);
+        return listByPage(1, model, "id", "asc");
     }
 
     @GetMapping("/users/page/{pageNumber}")
     public String listByPage(@PathVariable(name = "pageNumber") int pageNumber, Model model,
-                             @Param("sortField") String sortField, @Param("sortDir") String sortDir,
-                             @Param("keyword") String keyword) {
-        Page<User> page = service.listByPage(pageNumber, sortField, sortDir, keyword);
+                             @Param("sortField") String sortField, @Param("sortDir") String sortDir) {
+
+        Page<User> page = service.listByPage(pageNumber, sortField, sortDir);
         List<User> userList = page.getContent();
 
         long startCount = (pageNumber - 1) * AdminService.USERS_PER_PAGE + 1;
@@ -123,7 +138,6 @@ public class AdminController {
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", reverseSortDir);
-        model.addAttribute("keyword", keyword);
 
         return "index";
     }
