@@ -18,7 +18,7 @@ import java.util.*;
 
 @Service
 public class AdminService {
-    public static final int USERS_PER_PAGE = 3;
+    public static final int USERS_PER_PAGE = 10;
 
     @Autowired
     private UserRepository userRepository;
