@@ -1,10 +1,6 @@
 package gr.hua.ds.freetransportation.entities;
 
-import gr.hua.ds.freetransportation.dao.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.*;
-import java.util.Optional;
 
 @Entity
 @Table(name = "ROLES")

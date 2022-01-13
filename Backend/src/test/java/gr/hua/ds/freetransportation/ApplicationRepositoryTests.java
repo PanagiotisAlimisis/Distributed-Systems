@@ -27,6 +27,7 @@ public class ApplicationRepositoryTests {
 //        assertThat(u).isNotNull();
 //        u.addApplication(a);
 //        repo.save(a);
+        
     }
 
 }

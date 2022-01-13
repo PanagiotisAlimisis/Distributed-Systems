@@ -34,6 +34,7 @@
 git clone git@github.com:PanagiotisAlimisis/Distributed-Systems.git
 cd Distributed-Systems
 mysql -u $USER -p < SQL/create_and_insert_data.sql
+cd Backend
 chmod u+x start_server.sh
 ./start_server.sh
 
