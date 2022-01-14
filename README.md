@@ -1,33 +1,6 @@
 # Distributed-Systems
 
 
-## Analysis
-
-### System Architecture
-
-![System Architecture](Analysis/System_architecture.jpg)
-
-### Class Diagram
-
-![Class Diagram](Analysis/Class_Diagram.jpg)
-
-### ER Diagram
-
-![Entity Relationship Diagram](Analysis/Entity_Relationship_Diagram.jpg)
-
-### Use Case Diagram
-
-![Use Case Diagram](Analysis/Use_Case_Diagram.jpg)
-
-### Activity Diagram
-
-![Activity Diagram](Analysis/Application_Activity_Diagram.jpg)
-
-### Component Diagram
-
-![Component Diagram](Analysis/Component_Diagram.jpg)
-
-
 ## Project local setup
 
 ```
