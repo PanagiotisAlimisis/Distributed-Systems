@@ -20,7 +20,7 @@ public class User {
     @Column(length = 64, nullable = false, unique = true)
     private String email;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(length = 64, nullable = false)
     private String password;
 
