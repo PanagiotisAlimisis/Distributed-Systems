@@ -55,7 +55,7 @@ public class FileUtil {
     }
 
     public static ByteArrayResource getQRCode(User user) throws IOException {
-        return new ByteArrayResource(Files.readAllBytes(Paths.get("user-qr-codes/"+user.getId()+"/barcode.jpg")));
+        return new ByteArrayResource(Files.readAllBytes(Paths.get("user-qr-codes/"+user.getId()+"/qr-code.jpg")));
     }
 
     public static void cleanDir(String dir) {
