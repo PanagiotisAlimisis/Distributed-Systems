@@ -20,7 +20,7 @@ public class User {
     @Column(length = 64, nullable = false, unique = true)
     private String email;
 
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(length = 64, nullable = false)
     private String password;
 
@@ -116,13 +116,9 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
+                "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", enabled=" + enabled +
-                ", role=" + role.toString() +
                 '}';
     }
 }
