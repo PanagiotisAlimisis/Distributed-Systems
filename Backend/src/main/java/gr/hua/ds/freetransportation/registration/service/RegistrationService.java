@@ -3,10 +3,12 @@ package gr.hua.ds.freetransportation.registration.service;
 import gr.hua.ds.freetransportation.entities.User;
 import gr.hua.ds.freetransportation.admin.service.AdminService;
 import gr.hua.ds.freetransportation.registration.RegistrationRequest;
+import gr.hua.ds.freetransportation.rest_api.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class RegistrationService {
@@ -21,7 +23,8 @@ public class RegistrationService {
      */
     public ResponseEntity<User> register(RegistrationRequest request) {
         if ( (!requestIsOk(request)) || (!userService.isEmailUnique(null, request.getEmail())) ) {
-            return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+//            return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
         }
         User user = new User(request.getFirstName(), request.getLastName(),  request.getEmail(), request.getPassword());
         userService.saveUser(user);

@@ -10,6 +10,7 @@ import gr.hua.ds.freetransportation.dao.FreeTransportationApplicationRepository;
 import gr.hua.ds.freetransportation.entities.FreeTransportationApplication;
 import gr.hua.ds.freetransportation.entities.User;
 import gr.hua.ds.freetransportation.rest_api.ApplicationsResponse;
+import gr.hua.ds.freetransportation.rest_api.Response;
 import gr.hua.ds.freetransportation.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -49,17 +51,20 @@ public class TransportationEmployeeService {
         try {
             applicationId = Integer.valueOf(id);
         } catch (NumberFormatException e) {
-            return new ResponseEntity<>("First parameter should be a number.", HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "First parameter should be a number.");
+//            return new ResponseEntity<>("First parameter should be a number.", HttpStatus.BAD_REQUEST);
         }
 
         if (!decision.equals(Status.ACCEPT.toString()) && !decision.equals(Status.REJECT.toString())) {
-            return new ResponseEntity<>("The decision should be either ACCEPT or REJECT", HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The decision should be either ACCEPT or REJECT");
+//            return new ResponseEntity<>("The decision should be either ACCEPT or REJECT", HttpStatus.BAD_REQUEST);
         }
 
         Optional<FreeTransportationApplication> application = applicationRepository.findById(applicationId);
 
         if (application.isEmpty()) {
-            return new ResponseEntity<>("Application not found.", HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Application not found.");
+//            return new ResponseEntity<>("Application not found.", HttpStatus.NOT_FOUND);
         }
 
         if (decision.equals(Status.ACCEPT.toString())) {
@@ -72,7 +77,7 @@ public class TransportationEmployeeService {
         }
 
         applicationRepository.save(application.get());
-        return new ResponseEntity<>("Application's status has been updated.", HttpStatus.OK);
+        return ResponseEntity.ok(new Response(200, "Application's status has been updated."));
     }
 
     private void generateQRCode(User user) throws WriterException {
