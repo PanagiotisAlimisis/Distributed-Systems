@@ -57,4 +57,3 @@ insert into free_transportation_system.users(email, enabled, first_name, last_na
 insert into free_transportation_system.users(email, enabled, first_name, last_name, password, role_id) values("user3@mail.com", true, "user3", "user3", "$2a$12$.t6.bnmvqMqP7qPR8bnoyOG6itxF4Iog9p/LJlffXL6w.ZzXiBMnS", 3);
 insert into free_transportation_system.users(email, enabled, first_name, last_name, password, role_id) values("user4@mail.com", true, "user4", "user4", "$2a$12$.t6.bnmvqMqP7qPR8bnoyOG6itxF4Iog9p/LJlffXL6w.ZzXiBMnS", 4);
 
-insert into free_transportation_system.unemployment_applications(date_submitted, reason,  status, user_id) values("2022-01-01", "", "PENDING", 2);

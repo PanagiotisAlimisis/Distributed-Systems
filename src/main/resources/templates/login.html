@@ -3,23 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Login Page</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/styles.css}" />
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
 </head>
 <body>
 
-    <form th:action="@{/login}" method="post">
+<div class="center-div">
 
-        <div class="container">
-            <label for="email"><b>Email</b></label>
-            <input type="text" placeholder="Enter Email" name="email" required>
+    <form class="center" th:action="@{/login}" method="post">
 
-            <label for="password"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="password" required>
-
-            <button type="submit">Login</button>
+        <div class="center">
+<!--            <label for="email"><b>Email</b></label>-->
+            <input class="form__input" type="text" placeholder="Enter Email" name="email" required>
+            &nbsp;
+<!--            <label for="password"><b>Password</b></label>-->
+            <input class="form__input" type="password" placeholder="Enter Password" name="password" required>
+            &nbsp;
+            <button class="button-30" type="submit">Login</button>
         </div>
 
     </form>
+</div>
+
 
 </body>
 </html>

@@ -19,7 +19,7 @@ public class LoginService {
     private AuthenticationManager authenticationManager;
 
     /**
-     * 400 if request is bad or user not exists.
+     * 400 if request is bad or user does not exist.
      * 200 upon succession.
      * @param request
      * @return

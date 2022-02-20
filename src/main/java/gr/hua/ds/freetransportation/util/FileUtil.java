@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import org.slf4j.Logger;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -73,6 +74,25 @@ public class FileUtil {
             });
         } catch (IOException e) {
             LOGGER.error("Could not list files in dir : " + dirPath);
+        }
+    }
+
+    public static String retrievePhoto(MultipartFile multipartFile) {
+        String fileName = null;
+        if (!multipartFile.isEmpty()) {
+            fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        }
+        return fileName;
+    }
+
+    public static void savePhoto(String fileName, MultipartFile multipartFile) {
+        User user = UserUtil.getCurrentUser();
+        String uploadDir = "user-photos/" + user.getId();
+        FileUtil.cleanDir(uploadDir);
+        try {
+            FileUtil.saveMultipartFile(uploadDir, fileName, multipartFile);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
