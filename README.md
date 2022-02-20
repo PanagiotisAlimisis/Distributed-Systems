@@ -1,7 +1,7 @@
 # Distributed-Systems
 
 
-See live at: https://back-ds.herokuapp.com/freetransportation.
+See live at: https://back-ds.herokuapp.com/freetransportation. Login with email: admin@mail.com & password: 123.
 
 
 ## Project local setup
