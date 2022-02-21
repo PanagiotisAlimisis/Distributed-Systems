@@ -22,7 +22,7 @@ public class FreeTransportationApplication {
     @Column(length = 255, nullable = false)
     private String photo;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private User user = new User();
 
     public FreeTransportationApplication(String photo) {
