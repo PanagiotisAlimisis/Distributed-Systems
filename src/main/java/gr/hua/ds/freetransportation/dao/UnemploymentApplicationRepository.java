@@ -21,7 +21,7 @@ public interface UnemploymentApplicationRepository extends JpaRepository<Unemplo
     @Query("SELECT a FROM UnemploymentApplication a WHERE a.status = 'PENDING'")
     public Page<UnemploymentApplication> findPendingApplications(Pageable pageable);
 
-    @Query("SELECT a.id FROM UnemploymentApplication a WHERE a.user.id = :userId")
-    public List<UnemploymentApplication> selectByUserId(Integer userId);
+    @Query("SELECT a.id FROM UnemploymentApplication a WHERE a.user.id = :user_id")
+    public List<UnemploymentApplication> selectByUserId(@Param("user_id")  Integer userId);
 
 }

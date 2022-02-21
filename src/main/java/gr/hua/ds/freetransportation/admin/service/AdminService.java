@@ -118,7 +118,7 @@ public class AdminService {
         unemploymentApplicationRepository.selectByUserId(id).forEach(a->unemploymentApplicationRepository.delete(a));
 
 //        unemploymentApplicationRepository.deleteByUserId(id);
-        
+
         userRepository.deleteById(id);
     }
 

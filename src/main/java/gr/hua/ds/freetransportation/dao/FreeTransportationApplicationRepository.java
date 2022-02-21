@@ -21,8 +21,8 @@ public interface FreeTransportationApplicationRepository extends JpaRepository<F
     @Query("SELECT a FROM FreeTransportationApplication a WHERE a.status = 'PENDING' AND a.validated = true")
     public Page<FreeTransportationApplication> findUnansweredAndValidatedApplications(Pageable pageable);
 
-    @Query("SELECT a.id FROM FreeTransportationApplication a WHERE a.user.id = :userId")
-    public List<FreeTransportationApplication> selectByUserId(Integer userId);
+    @Query("SELECT a.id FROM FreeTransportationApplication a WHERE a.user.id = :user_id")
+    public List<FreeTransportationApplication> selectByUserId(@Param("user_id")  Integer userId);
 
 
 
