@@ -114,14 +114,15 @@ public class AdminService {
             throw new UserNotFoundException("Could not find any user with ID " + id);
         }
 
-        freeTransportationApplicationRepository.selectByUserId(id).forEach(a->freeTransportationApplicationRepository.delete(a));
-        unemploymentApplicationRepository.selectByUserId(id).forEach(a->unemploymentApplicationRepository.delete(a));
 
-//        unemploymentApplicationRepository.deleteByUserId(id);
+        try {
+            freeTransportationApplicationRepository.selectByUserId(id).forEach(a -> freeTransportationApplicationRepository.delete(a));
+            unemploymentApplicationRepository.selectByUserId(id).forEach(a -> unemploymentApplicationRepository.delete(a));
+            userRepository.deleteById(id);
+       } catch (Exception e) {
 
-        userRepository.deleteById(id);
+        }
     }
-
     public String getNameByEmail(String email) {
         return userRepository.getUserByEmail(email).getFirstName();
     }
