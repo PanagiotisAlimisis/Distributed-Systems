@@ -18,4 +18,6 @@ public interface UnemploymentApplicationRepository extends JpaRepository<Unemplo
     @Query("SELECT a FROM UnemploymentApplication a WHERE a.status = 'PENDING'")
     public Page<UnemploymentApplication> findPendingApplications(Pageable pageable);
 
+    @Query("DELETE FROM UnemploymentApplication a WHERE a.user.id = :userId")
+    public int deleteByUserId(Integer userId);
 }

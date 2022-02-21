@@ -1,12 +1,15 @@
 package gr.hua.ds.freetransportation.admin.service;
 
+import gr.hua.ds.freetransportation.dao.FreeTransportationApplicationRepository;
 import gr.hua.ds.freetransportation.dao.RoleRepository;
+import gr.hua.ds.freetransportation.dao.UnemploymentApplicationRepository;
 import gr.hua.ds.freetransportation.dao.UserRepository;
 import gr.hua.ds.freetransportation.entities.Role;
 import gr.hua.ds.freetransportation.RoleTypes;
 import gr.hua.ds.freetransportation.entities.User;
 import gr.hua.ds.freetransportation.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +31,12 @@ public class AdminService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private FreeTransportationApplicationRepository freeTransportationApplicationRepository;
+
+    @Autowired
+    private UnemploymentApplicationRepository unemploymentApplicationRepository;
 
 
     public List<User> listAll() {
@@ -104,6 +113,10 @@ public class AdminService {
         if (count == null || count == 0) {
             throw new UserNotFoundException("Could not find any user with ID " + id);
         }
+
+        freeTransportationApplicationRepository.deleteByUserId(id);
+        unemploymentApplicationRepository.deleteByUserId(id);
+        
         userRepository.deleteById(id);
     }
 
