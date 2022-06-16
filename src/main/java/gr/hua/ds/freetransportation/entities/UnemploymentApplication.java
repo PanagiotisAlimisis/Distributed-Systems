@@ -18,7 +18,7 @@ public class UnemploymentApplication {
     @Column(length = 15, nullable = false)
     private String status = Status.PENDING.toString();
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     private User user = new User();
 
     public UnemploymentApplication() {

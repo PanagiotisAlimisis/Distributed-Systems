@@ -1,0 +1,115 @@
+---
+- hosts: test-vm
+  vars:
+    docker_group: docker
+    user: panagiotis
+  tasks:
+    - name: Task - 1 Update APT package manager repositories cache
+      become: true
+      apt:
+        update_cache: yes
+    - name: Task - 2 Install Java
+      become: true
+      apt:
+        name: "{{ packages }}"
+        state: present
+      vars:
+        packages:
+          - openjdk-11-jdk
+
+    - name: Install required packages for docker
+      become: yes
+      become_method: sudo
+      apt:
+        name: "{{ item }}"
+        state: latest
+        update_cache: yes
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+        - python3-pip
+        - virtualenv
+        - python3-setuptools
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+    - name: Update apt and install docker-ce
+      become: yes
+      become_method: sudo
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: yes
+    - name: Install Docker
+      pip:
+        name: docker
+    - name: Create docker group
+      group:
+        name: "{{ docker_group }}"
+        state: present
+    - name: Add remote user to "docker" group
+      user:
+        name: "{{ user }}"
+        groups: "{{ docker_group }}"
+        append: yes
+
+    - name: Install Mysql server
+      become: yes
+      become_method: sudo
+      apt:
+        name: mysql-server
+        state: present
+    - name: Start MySql Service
+      systemd:
+        name: mysql.service
+        state: started
+    - name: Make sure pymysql is present
+      become: true
+      pip:
+        name: pymysql
+        state: present
+    - name: Copy sql file with starting data
+      copy:
+        src: ../SQL/create_and_insert_data.sql
+        dest: $PWD
+        mode: 0664
+    - name: Insert data if db not exists
+      shell: sudo mysql -e 'SHOW DATABASES;' | grep free_transportation_system || sudo mysql < create_and_insert_data.sql
+    - name: Create user panagiotis
+      become: true
+      mysql_user:
+        name: panagiotis
+        password: 12345
+        host: localhost
+        state: present
+        update_password: on_create
+        priv: "free_transportation_system.*:ALL"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+    - name: Remove file
+      file:
+        path: /home/panagiotis/FreeTransportation-0.0.1-SNAPSHOT.jar
+        state: absent
+    - name: Copy jar file
+      copy:
+        src: ../target/FreeTransportation-0.0.1-SNAPSHOT.jar
+        dest: /home/panagiotis
+        owner: panagiotis
+        group: panagiotis
+        mode: '0664'
+    - name: Stop Service
+      become: true
+      systemd:
+        name: app.service
+        state: stopped
+    - name: Start Service
+      become: true
+      systemd:
+        name: app.service
+        state: started
