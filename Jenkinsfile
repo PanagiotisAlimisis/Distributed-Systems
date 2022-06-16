@@ -8,12 +8,6 @@ pipeline {
             }
         }
 
-        stage ("Unit test") {
-            steps {
-                sh "mvn test"
-            }
-        }
-
         stage("Install package") {
             steps {
                 sh "mvn clean install package -DskipTests=true"
