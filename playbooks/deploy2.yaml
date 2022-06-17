@@ -1,0 +1,104 @@
+---
+- hosts: docker-vm
+  vars:
+    docker_group: "docker"
+    user: "docker"
+    network_name: "net"
+    db_image_name: "panagiotishua/db"
+    db_container_name: "db"
+    app_image_name: "panagiotishua/spring-app"
+    app_container_name: "app"
+  vars_files:
+    - vars/db-password.yaml
+  tasks:
+    - name: Install required packages for docker
+      become: yes
+      become_method: sudo
+      apt:
+        name: "{{ item }}"
+        state: latest
+        update_cache: yes
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+        - python3-pip
+        - virtualenv
+        - python3-setuptools
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+    - name: Update apt and install docker-ce
+      become: yes
+      become_method: sudo
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: yes
+    - name: Install Docker
+      pip:
+        name: docker
+    - name: Create docker group
+      group:
+        name: "{{ docker_group }}"
+        state: present
+    - name: Add remote user to "docker" group
+      user:
+        name: "{{ user }}"
+        groups: "{{ docker_group }}"
+        append: yes
+    - name: Pull db image from dockerhub
+      docker_image:
+        name: "{{ db_image_name }}"
+        source: pull
+    - name: Pull app image from dockerhub
+      docker_image:
+        name: "{{ app_image_name }}"
+        source: pull
+    - name: Create a network
+      docker_network:
+        name: "{{ network_name }}"
+    - name: Recreate db container
+      docker_container:
+        name: "{{ db_container_name }}"
+        image: "{{ db_image_name }}"
+        state: present
+        recreate: yes
+        networks:
+          - name: "{{ network_name }}"
+        env:
+          MYSQL_ROOT_PASSWORD: "{{ DB_PASSWORD }}"
+        volumes:
+          - data:/var/lib/mysql
+        ports:
+          - "3306:3306"
+    - name: Run db container
+      docker_container:
+        name: "{{ db_container_name }}"
+        state: started
+        restart: yes
+    - name: Recreate app container
+      docker_container:
+        name: "{{ app_container_name }}"
+        image: "{{ app_image_name }}"
+        state: present
+        recreate: yes
+        networks:
+          - name: "{{ network_name }}"
+        env:
+          DB_USER: 'root'
+          DB_PASSWORD:  "{{ DB_PASSWORD }}"
+          DB_URL: "jdbc:mysql://{{ db_container_name }}:3306/free_transportation_system"
+        ports:
+          - "8080:8080"
+    - name: Run app container
+      docker_container:
+        name: "{{ app_container_name }}"
+        state: started
+        restart: yes
