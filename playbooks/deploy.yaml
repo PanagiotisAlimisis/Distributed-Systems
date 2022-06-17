@@ -45,7 +45,7 @@
         update_password: on_create
         priv: "free_transportation_system.*:ALL"
         login_unix_socket: /var/run/mysqld/mysqld.sock
-    - name: Remove file
+    - name: Remove jar file
       file:
         path: /home/panagiotis/FreeTransportation-0.0.1-SNAPSHOT.jar
         state: absent
@@ -56,13 +56,8 @@
         owner: panagiotis
         group: panagiotis
         mode: '0664'
-    - name: Stop Service
+    - name: Restart springapp Service
       become: true
       systemd:
-        name: app.service
-        state: stopped
-    - name: Start Service
-      become: true
-      systemd:
-        name: app.service
-        state: started
+        name: springapp.service
+        state: restarted
