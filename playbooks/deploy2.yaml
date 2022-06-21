@@ -94,7 +94,8 @@
         env:
           DB_USER: 'root'
           DB_PASSWORD:  "{{ DB_PASSWORD }}"
-          DB_URL: "jdbc:mysql://{{ db_container_name }}:3306/free_transportation_system"
+          DB_HOST: db
+          DB_PORT: 3306
         ports:
           - "8080:8080"
     - name: Run app container
