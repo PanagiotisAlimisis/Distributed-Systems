@@ -6,7 +6,7 @@
     network_name: "net"
     db_image_name: "panagiotishua/db"
     db_container_name: "db"
-    app_image_name: "panagiotishua/spring-app"
+    app_image_name: "panagiotishua/springapp"
     app_container_name: "app"
   vars_files:
     - vars/db-password.yaml
