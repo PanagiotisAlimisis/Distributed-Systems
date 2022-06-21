@@ -1,3 +1,4 @@
 [azurehosts]
 test-vm
 docker-vm
+kubernetes-vm
