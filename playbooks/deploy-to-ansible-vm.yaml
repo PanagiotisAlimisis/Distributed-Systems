@@ -61,9 +61,19 @@
       systemd:
         name: springapp.service
         state: restarted
-    - name: Stop mailhog container
-      shell: docker stop mailhog
-    - name: Remove mailhog container
-      shell: docker rm mailhog
+    - name: Recreate mailhog container
+      docker_container:
+        name: mailhog
+        image: mailhog/mailhog
+        state: present
+        recreate: yes
+        networks:
+          - name: "{{ network_name }}"
+        ports:
+          - "1025:1025"
+          - "8025:8025"
     - name: Run mailhog container
-      shell: docker run -d -p 1025:1025 -p 8025:8025 --name mailhog mailhog/mailhog
+      docker_container:
+        name: mailhog/mailhog
+        state: started
+        restart: yes
