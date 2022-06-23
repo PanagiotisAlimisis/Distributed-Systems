@@ -43,13 +43,13 @@ pipeline {
 
         stage ("Deploy to ansible vm") {
             steps {
-                sh "ansible-playbook playbooks/deploy.yaml"
+                sh "ansible-playbook playbooks/deploy-to-ansible-vm.yaml"
             }
         }
 
         stage ("Deploy to docker vm") {
             steps {
-                sh "ansible-playbook playbooks/deploy2.yaml --vault-password-file $HOME/db-password.txt"
+                sh "ansible-playbook playbooks/deploy-to-docker-vm.yaml --vault-password-file $HOME/db-password.txt"
             }
         }
 

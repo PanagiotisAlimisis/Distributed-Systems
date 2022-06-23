@@ -95,11 +95,28 @@
           DB_USER: 'root'
           DB_PASSWORD:  "{{ DB_PASSWORD }}"
           DB_HOST: db
-          DB_PORT: 3306
+          DB_PORT: "3306"
+          MAILHOG_HOST: localhost
         ports:
           - "8080:8080"
     - name: Run app container
       docker_container:
         name: "{{ app_container_name }}"
+        state: started
+        restart: yes
+    - name: Recreate mailhog container
+      docker_container:
+        name: mailhog
+        image: mailhog/mailhog
+        state: present
+        recreate: yes
+        networks:
+          - name: "{{ network_name }}"
+        ports:
+          - "1025:1025"
+          - "8025:8025"
+    - name: Run mailhog container
+      docker_container:
+        name: mailhog/mailhog
         state: started
         restart: yes

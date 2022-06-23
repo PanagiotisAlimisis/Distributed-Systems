@@ -61,3 +61,9 @@
       systemd:
         name: springapp.service
         state: restarted
+    - name: Stop mailhog container
+      shell: docker stop mailhog
+    - name: Remove mailhog container
+      shell: docker rm mailhog
+    - name: Run mailhog container
+      shell: docker run -d -p 1025:1025 -p 8025:8025 --name mailhog mailhog/mailhog
