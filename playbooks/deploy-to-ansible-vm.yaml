@@ -67,8 +67,6 @@
         image: mailhog/mailhog
         state: present
         recreate: yes
-        networks:
-          - name: "{{ network_name }}"
         ports:
           - "1025:1025"
           - "8025:8025"
