@@ -42,6 +42,12 @@ spec:
                   name: secrets
                   key: DB_PORT
 
+            - name: MAILHOG_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: secrets
+                  key: MAILHOG_HOST
+
 ---
 apiVersion: v1
 kind: Service
