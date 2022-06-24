@@ -14,7 +14,7 @@ spec:
                 name: app
                 port:
                   number: 8080
-    tls:
-      - hosts:
+  tls:
+    - hosts:
         - app.alimisis.cloudns.ph
-        secretName: tls-secret
+      secretName: tls-secret
