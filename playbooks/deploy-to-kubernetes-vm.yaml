@@ -40,9 +40,13 @@
         - db-deployment.yaml
         - app-deployment.yaml
         - ingress.yaml
+        - mailhog-deployment.yaml
+        - mailhog-ingress.yaml
     - name: Deploy
       shell: microk8s.kubectl apply -f "{{item}}"
       loop:
         - db-deployment.yaml
+        - mailhog-deployment.yaml
+        - mailhog-ingress.yaml
         - app-deployment.yaml
         - ingress.yaml

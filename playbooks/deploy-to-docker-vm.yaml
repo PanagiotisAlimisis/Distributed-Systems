@@ -11,99 +11,53 @@
   vars_files:
     - vars/db-password.yaml
   tasks:
-    - name: Stop db container
-      docker_container:
-        name: "{{ db_container_name }}"
-        state: stopped
-    - name: Stop app container
-      docker_container:
-        name: "{{ app_container_name }}"
-        state: stopped
-    - name: Remove db container
-      docker_container:
-        name: "{{ db_container_name }}"
-        state: absent
-    - name: Remove app container
-      docker_container:
-        name: "{{ app_container_name }}"
-        state: absent
-    - name: Remove db image
-      docker_image:
-        name: "{{ db_image_name }}"
-        state: absent
-    - name: Remove app image
-      docker_image:
-        name: "{{ app_image_name }}"
-        state: absent
-    - name: Pull db image from dockerhub
-      docker_image:
-        name: "{{ db_image_name }}"
-        source: pull
-    - name: Pull app image from dockerhub
-      docker_image:
-        name: "{{ app_image_name }}"
-        source: pull
     - name: Create a network
       docker_network:
         name: "{{ network_name }}"
-    - name: Pull mailhog image from dockerhub
-      docker_image:
-        name: mailhog/mailhog
-        source: pull
-    - name: Stop mailhog container
+    - name: Create/Update the mailhog container
       docker_container:
         name: mailhog
-        state: stopped
-    - name: Remove mailhog container
-      docker_container:
-        name: mailhog
-        state: absent
-    - name: Copy auth file
-      copy:
-        src: ../auth.file
-        dest: /home/docker
-        owner: docker
-        group: docker
-        mode: '0664'
-    - name: Start mailhog container
-      shell: docker run --network net --name=mailhog -d -it -p 1025:1025 -p 8025:8025 -v $(pwd):/data/mailhog/ mailhog/mailhog -auth-file=/data/mailhog/auth.file
-    - name: Recreate db container
+        image: panagiotishua/mailhog
+        pull: true
+        restart_policy: always
+        networks:
+          - name: "{{ network_name }}"
+        ports:
+          - "1025:1025"
+          - "8025:8025"
+        state: started
+        restart: yes
+    - name: Create/Update the db container
       docker_container:
         name: "{{ db_container_name }}"
         image: "{{ db_image_name }}"
-        state: present
-        recreate: yes
+        pull: true
+        restart_policy: always
         networks:
           - name: "{{ network_name }}"
+        ports:
+          - "3306:3306"
         env:
           MYSQL_ROOT_PASSWORD: "{{ DB_PASSWORD }}"
         volumes:
           - data:/var/lib/mysql
-        ports:
-          - "3306:3306"
-    - name: Run db container
-      docker_container:
-        name: "{{ db_container_name }}"
         state: started
         restart: yes
-    - name: Recreate app container
+    - name: Create/Update the app container
       docker_container:
         name: "{{ app_container_name }}"
         image: "{{ app_image_name }}"
-        state: present
-        recreate: yes
+        pull: true
+        restart_policy: always
         networks:
           - name: "{{ network_name }}"
+        ports:
+          - "8080:8080"
         env:
           DB_USER: 'root'
-          DB_PASSWORD:  "{{ DB_PASSWORD }}"
+          DB_PASSWORD: "{{ DB_PASSWORD }}"
           DB_HOST: db
           DB_PORT: "3306"
           MAILHOG_HOST: mailhog
-        ports:
-          - "8080:8080"
-    - name: Run app container
-      docker_container:
-        name: "{{ app_container_name }}"
         state: started
         restart: yes

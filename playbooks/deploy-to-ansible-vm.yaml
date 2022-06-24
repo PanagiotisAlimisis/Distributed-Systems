@@ -71,19 +71,14 @@
     - name: Recreate mailhog container
       docker_container:
         name: mailhog
-        image: mailhog/mailhog
+        image: panagiotishua/mailhog
         state: present
         recreate: yes
         ports:
           - "1025:1025"
           - "8025:8025"
-    - name: Stop Mailhog
-      docker_container:
-        name: mailhog
-        state: stopped
-    - name: Remove Mailhog
-      docker_container:
-        name: mailhog
-        state: absent
     - name: Run mailhog container
-      shell: docker run --name=mailhog -d -it -p 1025:1025 -p 8025:8025 -v $(pwd):/data/mailhog/ mailhog/mailhog -auth-file=/data/mailhog/auth.file
+      docker_container:
+        name: mailhog
+        state: started
+        restart: yes

@@ -19,6 +19,7 @@ pipeline {
                 sh '''
                 docker build -t db -f DockerfileDb .
                 docker build -t springapp -f Dockerfile .
+                docker build -t mailhog -f DockerfileMailhog .
                 '''
             }
         }
@@ -28,6 +29,7 @@ pipeline {
                 sh '''
                 docker tag db panagiotishua/db
                 docker tag springapp panagiotishua/springapp
+                docker tag mailhog panagiotishua/mailhog
                 '''
             }
         }
@@ -37,6 +39,7 @@ pipeline {
                 sh '''
                 docker push panagiotishua/db
                 docker push panagiotishua/springapp
+                docker push panagiotishua/mailhog
                 '''
             }
         }
