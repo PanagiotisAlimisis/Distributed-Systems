@@ -35,4 +35,4 @@ spec:
       name: mailhog
       port: 1025
       targetPort: 1025
-  type: NodePort
+  type: ClusterIP
