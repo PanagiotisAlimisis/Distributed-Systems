@@ -1,0 +1,48 @@
+---
+- hosts: kubernetes-vm
+  vars:
+    remote_user: kubernetes
+  tasks:
+    - name: Install microk8s with option --classic
+      become: true
+      community.general.snap:
+        name: microk8s
+        classic: yes
+    - name: Allow pod-to-pod and pod-to-internet communication
+      become: true
+      shell:  ufw allow in on eth0 && sudo ufw allow out on eth0 && ufw default allow routed
+    - name: Enable plugins
+      become: true
+      shell: microk8s.enable dashboard dns storage ingress
+    - name: Add user to microk8s
+      become: true
+      shell: usermod -a -G microk8s {{ remote_user }}
+    - name: Change .kube ~/.owner
+      become: true
+      shell: chown -f -R {{ remote_user }} ~/.kube
+    - name: Add microk8s.kubectl alias for remote_user
+      lineinfile:
+        path=/home/{{remote_user}}/.profile
+        line="alias k='microk8s.kubectl'"
+        owner={{ remote_user }}
+        regexp='^alias k='microk8s.kubectl'$'
+        state=present
+        insertafter=EOF
+        create=True
+    - name: Copy configuration files
+      copy:
+        src: ../kubernetes/{{ item }}
+        dest: /home/{{ remote_user }}
+        owner: "{{ remote_user }}"
+        group: "{{ remote_user }}"
+        mode: '0664'
+      loop:
+        - db-deployment.yaml
+        - app-deployment.yaml
+        - ingress.yaml
+    - name: Deploy
+      shell: microk8s.kubectl apply -f "{{item}}"
+      loop:
+        - db-deployment.yaml
+        - app-deployment.yaml
+        - ingress.yaml

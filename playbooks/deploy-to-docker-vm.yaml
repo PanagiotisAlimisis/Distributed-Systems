@@ -11,48 +11,30 @@
   vars_files:
     - vars/db-password.yaml
   tasks:
-    - name: Install required packages for docker
-      become: yes
-      become_method: sudo
-      apt:
-        name: "{{ item }}"
-        state: latest
-        update_cache: yes
-      loop:
-        - apt-transport-https
-        - ca-certificates
-        - curl
-        - software-properties-common
-        - python3-pip
-        - virtualenv
-        - python3-setuptools
-    - name: Add Docker GPG apt Key
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
-    - name: Add Docker Repository
-      apt_repository:
-        repo: deb https://download.docker.com/linux/ubuntu focal stable
-        state: present
-    - name: Update apt and install docker-ce
-      become: yes
-      become_method: sudo
-      apt:
-        name: docker-ce
-        state: latest
-        update_cache: yes
-    - name: Install Docker
-      pip:
-        name: docker
-    - name: Create docker group
-      group:
-        name: "{{ docker_group }}"
-        state: present
-    - name: Add remote user to "docker" group
-      user:
-        name: "{{ user }}"
-        groups: "{{ docker_group }}"
-        append: yes
+    - name: Stop db container
+      docker_container:
+        name: "{{ db_container_name }}"
+        state: stopped
+    - name: Stop app container
+      docker_container:
+        name: "{{ app_container_name }}"
+        state: stopped
+    - name: Remove db container
+      docker_container:
+        name: "{{ db_container_name }}"
+        state: absent
+    - name: Remove app container
+      docker_container:
+        name: "{{ app_container_name }}"
+        state: absent
+    - name: Remove db image
+      docker_image:
+        name: "{{ db_image_name }}"
+        state: absent
+    - name: Remove app image
+      docker_image:
+        name: "{{ app_image_name }}"
+        state: absent
     - name: Pull db image from dockerhub
       docker_image:
         name: "{{ db_image_name }}"
@@ -64,6 +46,27 @@
     - name: Create a network
       docker_network:
         name: "{{ network_name }}"
+    - name: Pull mailhog image from dockerhub
+      docker_image:
+        name: mailhog/mailhog
+        source: pull
+    - name: Stop mailhog container
+      docker_container:
+        name: mailhog
+        state: stopped
+    - name: Remove mailhog container
+      docker_container:
+        name: mailhog
+        state: absent
+    - name: Copy auth file
+      copy:
+        src: ../auth.file
+        dest: /home/docker
+        owner: docker
+        group: docker
+        mode: '0664'
+    - name: Start mailhog container
+      shell: docker run --network net --name=mailhog -d -it -p 1025:1025 -p 8025:8025 -v $(pwd):/data/mailhog/ mailhog/mailhog -auth-file=/data/mailhog/auth.file
     - name: Recreate db container
       docker_container:
         name: "{{ db_container_name }}"
@@ -102,21 +105,5 @@
     - name: Run app container
       docker_container:
         name: "{{ app_container_name }}"
-        state: started
-        restart: yes
-    - name: Recreate mailhog container
-      docker_container:
-        name: mailhog
-        image: mailhog/mailhog
-        state: present
-        recreate: yes
-        networks:
-          - name: "{{ network_name }}"
-        ports:
-          - "1025:1025"
-          - "8025:8025"
-    - name: Run mailhog container
-      docker_container:
-        name: mailhog
         state: started
         restart: yes

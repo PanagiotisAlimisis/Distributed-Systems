@@ -61,6 +61,13 @@
       systemd:
         name: springapp.service
         state: restarted
+    - name: Copy auth file
+      copy:
+        src: ../auth.file
+        dest: /home/panagiotis
+        owner: panagiotis
+        group: panagiotis
+        mode: '0664'
     - name: Recreate mailhog container
       docker_container:
         name: mailhog
@@ -70,8 +77,13 @@
         ports:
           - "1025:1025"
           - "8025:8025"
-    - name: Run mailhog container
+    - name: Stop Mailhog
       docker_container:
         name: mailhog
-        state: started
-        restart: yes
+        state: stopped
+    - name: Remove Mailhog
+      docker_container:
+        name: mailhog
+        state: absent
+    - name: Run mailhog container
+      shell: docker run --name=mailhog -d -it -p 1025:1025 -p 8025:8025 -v $(pwd):/data/mailhog/ mailhog/mailhog -auth-file=/data/mailhog/auth.file

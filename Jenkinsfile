@@ -18,7 +18,7 @@ pipeline {
             steps {
                 sh '''
                 docker build -t db -f DockerfileDb .
-                docker build -t spring-app -f Dockerfile .
+                docker build -t springapp -f Dockerfile .
                 '''
             }
         }
@@ -27,7 +27,7 @@ pipeline {
             steps {
                 sh '''
                 docker tag db panagiotishua/db
-                docker tag spring-app panagiotishua/spring-app
+                docker tag springapp panagiotishua/springapp
                 '''
             }
         }
@@ -36,7 +36,7 @@ pipeline {
             steps {
                 sh '''
                 docker push panagiotishua/db
-                docker push panagiotishua/spring-app
+                docker push panagiotishua/springapp
                 '''
             }
         }
@@ -50,6 +50,12 @@ pipeline {
         stage ("Deploy to docker vm") {
             steps {
                 sh "ansible-playbook playbooks/deploy-to-docker-vm.yaml --vault-password-file $HOME/db-password.txt"
+            }
+        }
+
+        stage ("Deploy to kubernetes vm") {
+            steps {
+                sh "ansible-playbook playbooks/deploy-to-kubernetes-vm.yaml"
             }
         }
 
