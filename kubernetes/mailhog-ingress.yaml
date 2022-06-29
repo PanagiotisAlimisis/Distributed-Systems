@@ -14,3 +14,7 @@ spec:
                 name: mailhog
                 port:
                   number: 8025
+  tls:
+    - hosts:
+        - "mailhog.alimisis.cloudns.ph"
+      secretName: tls-secret-mailhog
