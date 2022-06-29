@@ -1,5 +1,8 @@
 ---
 - hosts: test-vm
+  vars:
+    user: panagiotis
+    dockerhub_username: panagiotishua
   vars_files:
     - vars/db-password.yaml
   tasks:
@@ -37,10 +40,10 @@
         mode: 0664
     - name: Insert data if db not exists
       shell: sudo mysql -e 'SHOW DATABASES;' | grep free_transportation_system || sudo mysql < create_and_insert_data.sql
-    - name: Create user panagiotis
+    - name: Create user {{ user }}
       become: true
       mysql_user:
-        name: panagiotis
+        name: {{ user }}
         password: "{{ DB_PASSWORD }}"
         host: localhost
         state: present
@@ -49,14 +52,14 @@
         login_unix_socket: /var/run/mysqld/mysqld.sock
     - name: Remove jar file
       file:
-        path: /home/panagiotis/FreeTransportation-0.0.1-SNAPSHOT.jar
+        path: /home/{{ user }}/FreeTransportation-0.0.1-SNAPSHOT.jar
         state: absent
     - name: Copy jar file
       copy:
         src: ../target/FreeTransportation-0.0.1-SNAPSHOT.jar
-        dest: /home/panagiotis
-        owner: panagiotis
-        group: panagiotis
+        dest: /home/{{ user }}
+        owner: {{ user }}
+        group: {{ user }}
         mode: '0664'
     - name: Restart springapp Service
       become: true
@@ -66,14 +69,14 @@
     - name: Copy auth file
       copy:
         src: ../auth.file
-        dest: /home/panagiotis
-        owner: panagiotis
-        group: panagiotis
+        dest: /home/{{ user }}
+        owner: {{ user }}
+        group: {{ user }}
         mode: '0664'
     - name: Recreate mailhog container
       docker_container:
         name: mailhog
-        image: panagiotishua/mailhog
+        image: {{ dockerhub_username }}/mailhog
         state: present
         recreate: yes
         ports:

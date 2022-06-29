@@ -1,7 +1,7 @@
 ---
 - hosts: kubernetes-vm
   vars:
-    remote_user: kubernetes
+    user: kubernetes
   tasks:
     - name: Install microk8s with option --classic
       become: true
@@ -16,15 +16,15 @@
       shell: microk8s.enable dashboard dns storage ingress
     - name: Add user to microk8s
       become: true
-      shell: usermod -a -G microk8s {{ remote_user }}
+      shell: usermod -a -G microk8s {{ user }}
     - name: Change .kube ~/.owner
       become: true
-      shell: chown -f -R {{ remote_user }} ~/.kube
-    - name: Add microk8s.kubectl alias for remote_user
+      shell: chown -f -R {{ user }} ~/.kube
+    - name: Add microk8s.kubectl alias for user
       lineinfile:
-        path=/home/{{remote_user}}/.profile
+        path=/home/{{user}}/.profile
         line="alias k='microk8s.kubectl'"
-        owner={{ remote_user }}
+        owner={{ user }}
         regexp='^alias k='microk8s.kubectl'$'
         state=present
         insertafter=EOF
@@ -32,9 +32,9 @@
     - name: Copy configuration files
       copy:
         src: ../kubernetes/{{ item }}
-        dest: /home/{{ remote_user }}
-        owner: "{{ remote_user }}"
-        group: "{{ remote_user }}"
+        dest: /home/{{ user }}
+        owner: "{{ user }}"
+        group: "{{ user }}"
         mode: '0664'
       loop:
         - db-deployment.yaml

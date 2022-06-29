@@ -4,10 +4,11 @@
     docker_group: "docker"
     user: "docker"
     network_name: "net"
-    db_image_name: "panagiotishua/db"
+    db_image_name: "db"
     db_container_name: "db"
-    app_image_name: "panagiotishua/springapp"
+    app_image_name: "springapp"
     app_container_name: "app"
+    dockerhub_username: "panagiotishua"
   vars_files:
     - vars/db-password.yaml
   tasks:
@@ -17,7 +18,7 @@
     - name: Create/Update the mailhog container
       docker_container:
         name: mailhog
-        image: panagiotishua/mailhog
+        image: {{ dockerhub_username }}/mailhog
         pull: true
         restart_policy: always
         networks:
@@ -30,7 +31,7 @@
     - name: Create/Update the db container
       docker_container:
         name: "{{ db_container_name }}"
-        image: "{{ db_image_name }}"
+        image: "{{ dockerhub_username }}/{{ db_image_name }}"
         pull: true
         restart_policy: always
         networks:
@@ -46,7 +47,7 @@
     - name: Create/Update the app container
       docker_container:
         name: "{{ app_container_name }}"
-        image: "{{ app_image_name }}"
+        image: "{{ dockerhub_username }}/{{ app_image_name }}"
         pull: true
         restart_policy: always
         networks:
