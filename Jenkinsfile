@@ -46,7 +46,7 @@ pipeline {
 
         stage ("Deploy to ansible vm") {
             steps {
-                sh "ansible-playbook playbooks/deploy-to-ansible-vm.yaml"
+                sh "ansible-playbook playbooks/deploy-to-ansible-vm.yaml --vault-password-file $HOME/db-password.txt"
             }
         }
 
