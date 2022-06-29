@@ -21,35 +21,35 @@ You need
 - A vm for the deployment with ansible+docker.
 - A vm for the deployment with ansible+kubernetes.
 
-  1. Add to your ssh config ```~/.ssh/config``` file on your local machine a record like this: 
-      ```
-      Host jenkins-server
-          HostName <<public-ip>>
-          User <<remote-user>>
-          IdentityFile <<ssh_public_key>> 
-      ```
-  2. Also add to the jenkins server at your jenkins user the following lines:
-     ```
-     Host docker-vm
-          HostName <<public-ip>>
-          User <<remote-user>>
-          IdentityFile <<ssh_public_key>> 
-     Host test-vm
-          HostName <<public-ip>>
-          User <<remote-user>>
-          IdentityFile <<ssh_public_key>> 
-     Host kubernetes-vm
-          HostName <<public-ip>>
-          User <<remote-user>>
-          IdentityFile <<ssh_public_key>> 
-     ```
-2. Create a Jenkins Pipeline and add a webhook in your git project, so that jenkins will be triggered automatically after every commit on your main branch.
-3. Create a file ```db-password.txt``` in your jenkins vm, and put it under ```$HOME``` for the jenkins user.
+1. Add to your ssh config ```~/.ssh/config``` file on your local machine a record like this: 
+    ```
+    Host jenkins-server
+        HostName <<public-ip>>
+        User <<remote-user>>
+        IdentityFile <<ssh_public_key>> 
+    ```
+2. Also add to the jenkins server at your jenkins user the following lines:
+   ```
+   Host docker-vm
+        HostName <<public-ip>>
+        User <<remote-user>>
+        IdentityFile <<ssh_public_key>> 
+   Host test-vm
+        HostName <<public-ip>>
+        User <<remote-user>>
+        IdentityFile <<ssh_public_key>> 
+   Host kubernetes-vm
+        HostName <<public-ip>>
+        User <<remote-user>>
+        IdentityFile <<ssh_public_key>> 
+   ```
+3. Create a Jenkins Pipeline and add a webhook in your git project, so that jenkins will be triggered automatically after every commit on your main branch.
+4. Create a file ```db-password.txt``` in your jenkins vm, and put it under ```$HOME``` for the jenkins user.
    1. The file should contain only one line with your password as plain text. (Assuming that only you have access in the jenkins vm)
-4. Add your email to Jenkins server as ```email```. 
-5. Create a free account at [DockerHub](hub.docker.com).
-6. Go to file ```Jenkinsfile``` and change the values ```panagiotishua```, to your username from DockerHub.
-7. Add this file under ```/usr/lib/systemd/system/``` on your ```ansible-vm``` with name ```springapp.service```
+5. Add your email to Jenkins server as ```email```. 
+6. Create a free account at [DockerHub](hub.docker.com).
+7. Go to file ```Jenkinsfile``` and change the values ```panagiotishua```, to your username from DockerHub.
+8. Add this file under ```/usr/lib/systemd/system/``` on your ```ansible-vm``` with name ```springapp.service```
 ```
 [Unit]
 Description=App service systemd
