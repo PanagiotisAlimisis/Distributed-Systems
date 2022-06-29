@@ -1,5 +1,7 @@
 ---
 - hosts: test-vm
+  vars_files:
+    - vars/db-password.yaml
   tasks:
     - name: Task - 1 Update APT package manager repositories cache
       become: true
