@@ -1,8 +1,8 @@
 ---
 - hosts: test-vm
   vars:
-    user: panagiotis
-    dockerhub_username: panagiotishua
+    user: "panagiotis"
+    dockerhub_username: "panagiotishua"
   vars_files:
     - vars/db-password.yaml
   tasks:
@@ -43,7 +43,7 @@
     - name: Create user {{ user }}
       become: true
       mysql_user:
-        name: {{ user }}
+        name: "{{ user }}"
         password: "{{ DB_PASSWORD }}"
         host: localhost
         state: present
@@ -57,9 +57,9 @@
     - name: Copy jar file
       copy:
         src: ../target/FreeTransportation-0.0.1-SNAPSHOT.jar
-        dest: /home/{{ user }}
-        owner: {{ user }}
-        group: {{ user }}
+        dest: /home/"{{ user }}"
+        owner: "{{ user }}"
+        group: "{{ user }}"
         mode: '0664'
     - name: Restart springapp Service
       become: true
@@ -69,14 +69,14 @@
     - name: Copy auth file
       copy:
         src: ../auth.file
-        dest: /home/{{ user }}
-        owner: {{ user }}
-        group: {{ user }}
+        dest: /home/"{{ user }}"
+        owner: "{{ user }}"
+        group: "{{ user }}"
         mode: '0664'
     - name: Recreate mailhog container
       docker_container:
         name: mailhog
-        image: {{ dockerhub_username }}/mailhog
+        image: "{{ dockerhub_username }}/mailhog"
         state: present
         recreate: yes
         ports:

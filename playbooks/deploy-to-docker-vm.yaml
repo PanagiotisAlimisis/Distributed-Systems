@@ -18,7 +18,7 @@
     - name: Create/Update the mailhog container
       docker_container:
         name: mailhog
-        image: {{ dockerhub_username }}/mailhog
+        image: "{{ dockerhub_username }}/mailhog"
         pull: true
         restart_policy: always
         networks:
