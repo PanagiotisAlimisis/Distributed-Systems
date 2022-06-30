@@ -43,7 +43,7 @@ You need
         User <<remote-user>>
         IdentityFile <<ssh_public_key>> 
    ```
-3. Ansible needs to be install on your jenkins vm.
+3. Ansible needs to be installed on your jenkins vm.
 4. Create a Jenkins Pipeline and add a webhook in your git project, so that jenkins will be triggered automatically after every commit on your main branch.
 5. Create a file ```db-password.txt``` in your jenkins vm, and put it under ```$HOME``` for the jenkins user.
    1. The file should contain only one line with your password as plain text. (Assuming that only you have access in the jenkins vm)
