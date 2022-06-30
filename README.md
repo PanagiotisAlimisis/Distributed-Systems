@@ -47,7 +47,7 @@ You need
 4. Create a file ```db-password.txt``` in your jenkins vm, and put it under ```$HOME``` for the jenkins user.
    1. The file should contain only one line with your password as plain text. (Assuming that only you have access in the jenkins vm)
 5. Add your email to Jenkins server as ```email```. 
-6. Create a free account at [DockerHub](hub.docker.com).
+6. Create a free account at [DockerHub](https://hub.docker.com).
 7. Go to file ```Jenkinsfile``` and change the values ```panagiotishua```, to your username from DockerHub.
 8. Add this file under ```/usr/lib/systemd/system/``` on your ```ansible-vm``` with name ```springapp.service```
 ```
